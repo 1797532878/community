@@ -1,8 +1,8 @@
 #ServerProperties
 server:
   port: 8080
-  servlet:
-    context-path: /community
+#  servlet:
+#    context-path: /community
 
   #ThymeleafProperties
 spring:
@@ -60,6 +60,7 @@ logging:
     com.nowcoder.community: debug
 
 #community
-community:
-  path:
-    domain: http://localhost:8080
+#community:
+#  path:
+#    domain: http://localhost:8080
+#  upload: d:/work/data/upload

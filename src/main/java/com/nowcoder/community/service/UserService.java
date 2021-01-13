@@ -66,6 +66,10 @@ public class UserService implements CommunityConstant {
             map.put("emailMsg","密码不能为空!");
             return map;
         }
+        if (StringUtils.length(user.getPassword()) < 8){
+            map.put("passwordMsg","密码不能少于8位");
+            return map;
+        }
 
         //验证账号是否存在
         User u = userMapper.selectByName(user.getUsername());
@@ -165,5 +169,19 @@ public class UserService implements CommunityConstant {
     //退出
     public void logout(String ticket){
         loginTicketMapper.updateStatus(ticket,1);
+    }
+
+    public LoginTicket findLoginTicket(String ticket){
+        return loginTicketMapper.selectByTicket(ticket);
+    }
+
+    public int updateHeader(int userId,String headerUrl){
+        int i = userMapper.updateHeader(userId, headerUrl);
+        return i;
+    }
+
+    public int  updateUserPassword(int userId,String password){
+        int i = userMapper.updatePassword(userId, password);
+        return i;
     }
 }
