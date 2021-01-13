@@ -26,6 +26,10 @@ public class DiscussPostService {
         return discussPostMapper.selectDiscussPostRows(userId);
     }
 
+    public int countDiscussPostTotalRows(int id){
+        return discussPostMapper.countDiscussPostRows(id);
+    }
+
     public int addDiscussPost(DiscussPost discussPost){
         if (discussPost == null){
             throw new IllegalArgumentException("参数不能为空！");
@@ -41,5 +45,9 @@ public class DiscussPostService {
 
     public DiscussPost findDiscussPostById(int id){
         return discussPostMapper.selectDiscussPostById(id);
+    }
+
+    public int updateCommentCount(int id,int commentCount){
+        return discussPostMapper.updateCommentCount(id,commentCount);
     }
 }

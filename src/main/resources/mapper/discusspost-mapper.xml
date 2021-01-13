@@ -42,6 +42,15 @@
         </if>
     </select>
 
+    <select id="countDiscussPostRows" resultType="int">
+        select comment_count
+        from discuss_post
+        where status != 2
+        <if test="id!=0">
+            and id = #{id}
+        </if>
+    </select>
+
     <insert id="insertDiscussPost" parameterType="DiscussPost">
         insert into discuss_post(<include refid="insertFields"></include>)
         values (#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{score})
@@ -52,5 +61,9 @@
         from discuss_post
         where id = #{id}
     </select>
-    
+
+    <update id="updateCommentCount">
+        update discuss_post set comment_count = #{commentCount} where id = #{id}
+    </update>
+
 </mapper>
