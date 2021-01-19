@@ -28,12 +28,11 @@ spring:
             enable: true
             required: true
 
-
   # DataSourceProperties
   #mysql 驱动   useSSL 不启用安全连接
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/community?characterEncoding=utf-8&useSSL=false&serverTimezone=Hongkong
+    url: jdbc:mysql://localhost:3306/community?characterEncoding=utf-8&useSSL=false&serverTimezone=Hongkong&allowPublicKeyRetrieval=true
     username: root
     password: 123456
     type: com.zaxxer.hikari.HikariDataSource
@@ -41,7 +40,13 @@ spring:
     hikari.minimum-idle: 5
     hikari.idle-timeout: 30000
 
-  # MybatisProperties
+  redis:
+    database: 11
+    host: localhost
+    port: 6379
+
+
+# MybatisProperties
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   #mapper文件映射的实体类地址

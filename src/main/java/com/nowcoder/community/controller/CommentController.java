@@ -35,15 +35,6 @@ public class CommentController {
         return CommunityUtil.getJSONString(0,"发布成功！");
     }
 
-    @RequestMapping(path = "/add2/{discussPostId}", method = RequestMethod.POST)
-    public String addComment2(@PathVariable("discussPostId") int discussPostId, Comment comment,int current) {
-        comment.setUserId(hostHolder.getUser().getId());
-        comment.setStatus(0);
-        comment.setCreateTime(new Date());
-        commentService.addComment(comment);
-
-        return "redirect:/discuss/detail/" + discussPostId + "?current=" + current;
-    }
 
 
     @RequestMapping(path = "/addEnd/{discussPostId}",method = RequestMethod.POST)

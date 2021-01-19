@@ -4,6 +4,7 @@ import com.nowcoder.community.entity.LoginTicket;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
+@Deprecated  //不推荐使用
 public interface LoginTicketMapper {
 
     //自动生成主键要注明

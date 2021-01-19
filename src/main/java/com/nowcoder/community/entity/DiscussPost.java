@@ -10,6 +10,7 @@ import java.util.Date;
 @Data
 public class DiscussPost {
     private int id;
+    //帖子人的ID
     private int userId;
     private String title;
     private String content;
