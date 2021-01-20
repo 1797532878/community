@@ -1,8 +1,12 @@
 package com.nowcoder.community.controller;
 
 import com.nowcoder.community.entity.Comment;
+import com.nowcoder.community.entity.DiscussPost;
+import com.nowcoder.community.entity.Event;
+import com.nowcoder.community.event.EventProducer;
 import com.nowcoder.community.service.CommentService;
 import com.nowcoder.community.service.DiscussPostService;
+import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +17,7 @@ import java.util.Date;
 
 @Controller
 @RequestMapping("/comment")
-public class CommentController {
+public class CommentController implements CommunityConstant {
 
     @Autowired
     private CommentService commentService;
@@ -24,6 +28,9 @@ public class CommentController {
     @Autowired
     private HostHolder hostHolder;
 
+    @Autowired
+    private EventProducer producer;
+
     @RequestMapping(path = "/add/{discussPostId}",method = RequestMethod.POST)
     @ResponseBody
     public String addComment(@PathVariable("discussPostId")int discussPostId, Comment comment){
@@ -32,7 +39,25 @@ public class CommentController {
         comment.setCreateTime(new Date());
         commentService.addComment(comment);
 
+        String postId = String.valueOf(discussPostId);
+
+        Event event = new Event()
+                .setTopic(TOPIC_COMMENT)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(comment.getEntityType())
+                .setEntityId(comment.getEntityId())
+                .setData("postId",postId);
+        if (comment.getEntityType() == ENTITY_TYPE_POST){
+            DiscussPost target = discussPostService.findDiscussPostById(comment.getEntityId());
+            event.setEntityUserId(target.getUserId());
+        }else if (comment.getEntityType() == ENTITY_TYPE_COMMENT){
+            Comment target = commentService.findCommentByEntityId(comment.getEntityId());
+            event.setEntityUserId(target.getUserId());
+        }
+        producer.fireEvent(event);
+
         return CommunityUtil.getJSONString(0,"发布成功！");
+
     }
 
 
@@ -50,6 +75,25 @@ public class CommentController {
         }else {
             page = rows / 5;
         }
+
+        String postId = String.valueOf(discussPostId);
+
+        Event event = new Event()
+                .setTopic(TOPIC_COMMENT)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(comment.getEntityType())
+                .setEntityId(comment.getEntityId())
+                .setData("postId",postId);
+        if (comment.getEntityType() == ENTITY_TYPE_POST){
+            DiscussPost target = discussPostService.findDiscussPostById(comment.getEntityId());
+            event.setEntityUserId(target.getUserId());
+        }else if (comment.getEntityType() == ENTITY_TYPE_COMMENT){
+            Comment target = commentService.findCommentByEntityId(comment.getEntityId());
+            event.setEntityUserId(target.getUserId());
+        }
+
+        producer.fireEvent(event);
+
         //跳转到最后一页
         return "redirect:/discuss/detail/" + discussPostId + "?current=" + page;
     }

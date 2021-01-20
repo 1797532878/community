@@ -44,7 +44,16 @@ spring:
     database: 11
     host: localhost
     port: 6379
-
+#KafkaProperties
+  kafka:
+    bootstrap-servers:
+      localhost: 9092
+    consumer:
+      group-id: community-consumer-group
+      #是否自动提交消费者的偏移量  消费者按偏移量读取的
+      enable-auto-commit: true
+      #多久自动提交一次
+      auto-commit-interval: 3000
 
 # MybatisProperties
 mybatis:
