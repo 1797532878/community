@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/comment")
@@ -51,10 +52,21 @@ public class CommentController implements CommunityConstant {
             DiscussPost target = discussPostService.findDiscussPostById(comment.getEntityId());
             event.setEntityUserId(target.getUserId());
         }else if (comment.getEntityType() == ENTITY_TYPE_COMMENT){
-            Comment target = commentService.findCommentByEntityId(comment.getEntityId());
-            event.setEntityUserId(target.getUserId());
+            List<Comment> target = commentService.findCommentByEntityId(comment.getEntityId());
+            event.setEntityUserId(target.get(0).getUserId());
         }
         producer.fireEvent(event);
+
+        if (comment.getEntityType() == ENTITY_TYPE_POST){
+            //触发评论帖子事件，不是评论里面的回复  ES
+            event = new Event()
+                    .setTopic(TOPIC_PUBLISH)
+                    .setUserId(comment.getUserId())
+                    .setEntityType(ENTITY_TYPE_POST)
+                    .setEntityId(discussPostId);
+            producer.fireEvent(event);
+        }
+
 
         return CommunityUtil.getJSONString(0,"发布成功！");
 
@@ -88,8 +100,8 @@ public class CommentController implements CommunityConstant {
             DiscussPost target = discussPostService.findDiscussPostById(comment.getEntityId());
             event.setEntityUserId(target.getUserId());
         }else if (comment.getEntityType() == ENTITY_TYPE_COMMENT){
-            Comment target = commentService.findCommentByEntityId(comment.getEntityId());
-            event.setEntityUserId(target.getUserId());
+            List<Comment> target = commentService.findCommentByEntityId(comment.getEntityId());
+            event.setEntityUserId(target.get(0).getUserId());
         }
 
         producer.fireEvent(event);

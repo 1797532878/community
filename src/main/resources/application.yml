@@ -55,6 +55,12 @@ spring:
       #多久自动提交一次
       auto-commit-interval: 3000
 
+##ElasticsearchProperties
+  elasticsearch:
+    rest:
+      uris: http://127.0.0.1:9200
+
+
 # MybatisProperties
 mybatis:
   mapper-locations: classpath:mapper/*.xml
