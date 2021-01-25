@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface DiscussPostMapper {
 
-    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit);
+    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit, int orderMode);
     //个人主页  userId为0则不管  offset:起始行数  limit:每页限制多少个
 
     //@param注解用于给参数取别名   如果只有一个参数 且 在<if>中使用-》动态sql  必须加别名。
@@ -22,5 +22,11 @@ public interface DiscussPostMapper {
     DiscussPost selectDiscussPostById(int id);
 
     int updateCommentCount(int id,int commentCount);
+
+    int updateType(int id,int type);
+
+    int updateStatus(int id,int status);
+
+    int updateScore(int id, double score);
 }
 

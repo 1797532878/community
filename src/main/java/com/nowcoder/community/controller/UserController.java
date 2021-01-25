@@ -202,7 +202,7 @@ public class UserController implements CommunityConstant {
 
         List<Map<String,Object>> list = new ArrayList<>();
         //分页查询我的帖子
-        List<DiscussPost> postList = discussPostService.findDiscussPosts(userId, page.getOffset(), page.getLimit());
+        List<DiscussPost> postList = discussPostService.findDiscussPosts(userId, page.getOffset(), page.getLimit(),0);
         for (DiscussPost discussPost : postList){
             Map<String,Object> map = new HashMap<>();
             map.put("post",discussPost);

@@ -155,6 +155,7 @@ public class MessageController implements CommunityConstant {
 
     }
 
+    //通知
     @RequestMapping(path = "/notice/list",method = RequestMethod.GET)
     public String getNoticeList(Model model){
         User user = hostHolder.getUser();
